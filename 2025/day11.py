@@ -18,7 +18,22 @@ def out_search(node, target="out"):
 		ways1_count += 1
 		return
 	for child in node.children:
-		out_search(child)
+		out_search(child, target)
+
+node_counts = None
+def out_search2(node, target="out"):
+	global node_counts
+	if node.label == target:
+		if node not in node_counts:
+			node_counts[node] = 0
+		return 1 + node_counts[node]
+	if node in node_counts:
+		return node_counts[node]
+	if node not in node_counts:
+		node_counts[node] = 0
+	for child in node.children:
+		node_counts[node] += out_search2(child, target)
+	return node_counts[node]
 
 if __name__ == "__main__":
 
@@ -37,3 +52,10 @@ if __name__ == "__main__":
 	out_search(Nodes["you"])
 	print(ways1_count)
 
+	node_counts = dict()
+	a = out_search2(Nodes["fft"], target='dac')
+	node_counts = dict()
+	b = out_search2(Nodes["dac"], target='out')
+	node_counts = dict()
+	c = out_search2(Nodes["svr"], target='fft')
+	print(a*b*c)
