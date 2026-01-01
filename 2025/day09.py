@@ -4,6 +4,18 @@
 
 # Advent of Code 2025 Day 09
 
+'''
+	
+		 j--------l
+		p-q       |
+		 |       p-q
+		 i--------k
+	 
+'''
+
+def hcuts(i,j,k,l,p,q):
+	return (p[0] < i[0] and q[0] > i[0] and p[1] > i[1] and p[1] < j[1]) or (q[0] > k[0] and p[0] < k[0] and p[1] > k[1] and p[1] < l[1])
+
 def inside(i,j,k,l,x,y):
 	return x > i[0] and x < k[0] and y > k[1] and y < j[1]
 
@@ -52,8 +64,7 @@ if __name__ == "__main__":
 			k = (max(a[0], b[0]), min(a[1], b[1]))
 			l = (max(a[0], b[0]), max(a[1], b[1]))
 
-			# cut-off boundary determined from observation of plotted polygon shape
-			if not any(inside(i,j,k,l,x,y) for x,y in pts) and (i[1] >= 50147):
+			if not any(inside(i,j,k,l,x,y) for x,y in pts) and not any(hcuts(i,j,k,l,x,y) for x,y in horiz_cuts):
 				largest = max(largest, (abs(a[0]-b[0])+1) * (abs(a[1]-b[1])+1))
 				if largest not in seen:
 					x2s = [ u[0] for u in (i,j,k,l) ]
